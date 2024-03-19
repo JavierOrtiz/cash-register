@@ -2,6 +2,7 @@ class Cart
   def self.start
     loop do
       system('clear')
+      display_available_offers
       display_main
       chomp = gets.chomp
       close if chomp == 'q'
@@ -34,5 +35,15 @@ class Cart
 
     puts "----------------------"
     print "Add product to cart or press Q to go back "
+  end
+
+  def self.display_available_offers
+    available_offers = CartService.available_offers
+    puts "-------- OFFERS AVAILABLE --------"
+    puts '- 0 offers available' if available_offers.empty?
+
+    available_offers.each_with_index do |offer, i|
+      puts "[#{i}] - #{offer.name}"
+    end
   end
 end
