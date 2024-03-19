@@ -1,6 +1,6 @@
 require './db/memory'
 
-class Cart
+class CartService
   CART_KEY = 'cart'.freeze
 
   def self.setup

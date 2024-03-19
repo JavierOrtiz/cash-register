@@ -1,6 +1,6 @@
 require './models/product'
 require './pages/menu'
-require './services/cart'
+require './services/cart_service'
 
 class Catalog
   def self.start
@@ -23,11 +23,11 @@ class Catalog
   def self.display_invalid_option
     system('clear')
     puts "Invalid option. Please try again."
-    display_catalog
+    display_main
   end
 
   def self.display_cart_list
-    cart_list = Cart.list
+    cart_list = CartService.list
     return unless cart_list.any?
 
     puts "-------- CART LIST --------"
@@ -50,7 +50,7 @@ class Catalog
   def self.handle_action(chomp)
     option = @products[chomp.to_i] if chomp =~ /\A[-+]?[0-9]*\.?[0-9]+\Z/
     if option
-      Cart.add_item(option)
+      CartService.add_item(option)
     else
       display_invalid_option
     end

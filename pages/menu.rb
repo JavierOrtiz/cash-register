@@ -1,7 +1,9 @@
 require './pages/catalog'
+require './pages/cart'
 class Menu
   MENU_ITEMS = [
-    { name: 'Catalog', klass: Catalog }
+    { name: 'Catalog', klass: Catalog },
+    { name: 'Cart', klass: Cart },
   ].freeze
 
   def self.start

@@ -1,10 +1,10 @@
 require './pages/menu'
-require './services/cart'
+require './services/cart_service'
 
 class App
   def initialize
     system('clear')
-    Cart.setup
+    CartService.setup
     Menu.start
   end
 end
