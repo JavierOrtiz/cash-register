@@ -13,4 +13,12 @@ class Seed
       { name: 'Bulk purchase', slug: 'custom_bulk_purchase', logic: 'quantity >= min_quantity ? quantity * new_unit_price : quantity * unit_price' }
     ]
   end
+
+  def self.product_offers
+    [
+      { offer_slug: 'two_plus_one', product_code: 'GR1', min_quantity: nil, new_unit_price: nil },
+      { offer_slug: 'custom_bulk_purchase', product_code: 'SR1', min_quantity: 3, new_unit_price: 450 },
+      { offer_slug: 'custom_bulk_purchase', product_code: 'CF1', min_quantity: 3, new_unit_price: 'price * (2.0 / 3.0)' }
+    ]
+  end
 end
