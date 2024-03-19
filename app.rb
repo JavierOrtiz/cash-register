@@ -1,4 +1,4 @@
-require './menu'
+require './pages/menu'
 
 class App
 end
