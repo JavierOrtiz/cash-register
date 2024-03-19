@@ -1,5 +1,6 @@
 class Cart
   def self.start
+    # TODO: Add logic to reject products from cart
     loop do
       system('clear')
       display_available_offers
@@ -21,6 +22,7 @@ class Cart
   end
 
   def self.display_main
+    # TODO: Print product list as a table, and try to add original price, and price with discount to give a better vision of discounts
     cart_list = CartService.list
 
     puts "-------- CART LIST --------"

@@ -24,7 +24,7 @@ class CartService
     Offer.all.select { |offer| matches.map(&:offer_slug).uniq.include?(offer.slug) }
   end
 
-  def self.calculate_total
+  def self.calculate_total # TODO: Refactor and split this code, and test it
     cart = list
     total = 0
 

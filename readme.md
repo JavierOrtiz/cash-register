@@ -15,3 +15,7 @@ Just a test of how to create a CLI app in Ruby with some crazy algoritms and oth
 4. Execute the CLI app
 `ruby app.rb`
 5. Ready to test!
+
+## How to extend
+
+# TODO: Add documentation to extend offers, products, menu links or whatever do you want to extend.
