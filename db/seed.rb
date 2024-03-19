@@ -9,8 +9,8 @@ class Seed
 
   def self.offers
     [
-      { name: '2x1', slug: 'two_plus_one', logic: '((quantity / 2) + (quantity % 2)) * unit_price' },
-      { name: 'Bulk purchase', slug: 'custom_bulk_purchase', logic: 'quantity >= min_quantity ? quantity * new_unit_price : quantity * unit_price' }
+      { name: '2x1', slug: 'two_plus_one', logic: '((current_quantity / 2) + (current_quantity % 2)) * original_unit_price' },
+      { name: 'Bulk purchase', slug: 'custom_bulk_purchase', logic: 'current_quantity >= min_quantity ? current_quantity * new_unit_price : current_quantity * original_unit_price' }
     ]
   end
 

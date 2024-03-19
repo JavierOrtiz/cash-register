@@ -32,6 +32,7 @@ class Cart
     puts "----------------------"
 
     puts "TOTAL AMOUNT: #{cart_list.sum(&:price_in_cents).to_f / 100}€"
+    puts "TOTAL AMOUNT WITH DISCOUNT: #{CartService.calculate_total}€"
 
     puts "----------------------"
     print "Add product to cart or press Q to go back "
