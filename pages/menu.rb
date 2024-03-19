@@ -6,23 +6,11 @@ class Menu
 
   def self.start
     loop do
-      puts "-------- CASH APP MENU --------"
-      MENU_ITEMS.each_with_index do |item, i|
-        puts "[#{i}] #{item[:name]}"
-      end
-      puts "----------------------"
-      print "Please select an option or Q to exit: "
-
+      system('clear')
+      display_main
       chomp = gets.chomp
       close if chomp == 'q'
-
-      option = MENU_ITEMS[chomp.to_i] if chomp =~ /\A[-+]?[0-9]*\.?[0-9]+\Z/
-
-      if option
-        option[:klass].start
-      else
-        item_not_found
-      end
+      handle_action(chomp)
     end
   end
 
@@ -35,5 +23,26 @@ class Menu
   def self.item_not_found
     system('clear')
     puts "Invalid option. Please try again."
+  end
+
+  def self.display_main
+    puts "-------- CASH APP MENU --------"
+    MENU_ITEMS.each_with_index do |item, i|
+      puts "[#{i}] #{item[:name]}"
+    end
+    puts "----------------------"
+    print "Please select an option or Q to exit: "
+  end
+
+  private_class_method
+
+  def self.handle_action(chomp)
+    option = MENU_ITEMS[chomp.to_i] if chomp =~ /\A[-+]?[0-9]*\.?[0-9]+\Z/
+
+    if option
+      option[:klass].start
+    else
+      item_not_found
+    end
   end
 end
