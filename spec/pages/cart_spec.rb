@@ -10,6 +10,23 @@ RSpec.describe Cart do
     end
   end
 
+  context "when the Cart has an item" do
+    it "displays the cart's contents" do
+      cart_list = [double('Product', name: 'Redbull', price_in_cents: 250)]
+      expect(CartService).to receive(:list).and_return(cart_list)
+      expect { Cart.display_main }.to output(/Redbull/).to_stdout
+    end
+  end
+
+  context "when the Cart has multiple item" do
+    it "displays the correct total amount" do
+      cart_list = [double('Product', name: 'Redbull', price_in_cents: 250), double('Product', name: 'Jagger', price_in_cents: 1150)]
+      total_amount = cart_list.sum(&:price_in_cents).to_f / 100
+      expect(CartService).to receive(:list).and_return(cart_list)
+      expect { Cart.display_main }.to output(/TOTAL AMOUNT: #{total_amount}€/).to_stdout
+    end
+  end
+
   context "when invalid option is selected" do
     it "displays 'Invalid option' message" do
       expect { Cart.item_not_found }.to output(/Invalid option\. Please try again\./).to_stdout

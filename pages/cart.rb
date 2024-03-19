@@ -26,8 +26,11 @@ class Cart
     puts '- Empty cart' if cart_list.empty?
 
     cart_list.each_with_index do |item, i|
-      puts "[#{i}] #{item.name}"
+      puts "[#{i}] - #{item.name} - #{item.price_in_cents.to_f / 100}€"
     end
+    puts "----------------------"
+
+    puts "TOTAL AMOUNT: #{cart_list.sum(&:price_in_cents).to_f / 100}€"
 
     puts "----------------------"
     print "Add product to cart or press Q to go back "
