@@ -1,58 +1,65 @@
 require './models/product'
 require './pages/menu'
-require './services/cart_service'
+require 'terminal-table'
 
 class Catalog
-  def self.start
-    @products = Product.all
-    loop do
+  class << self
+  
+    def start
+      @products = Product.all
+      loop do
+        system('clear')
+        display_cart_list
+        display_main
+        chomp = gets.chomp
+        close if chomp == 'q'
+        handle_action(chomp)
+      end
+    end
+  
+    def close
       system('clear')
-      display_cart_list
+      Menu.start
+    end
+  
+    def display_invalid_option
+      system('clear')
+      puts "Invalid option. Please try again."
       display_main
-      chomp = gets.chomp
-      close if chomp == 'q'
-      handle_action(chomp)
     end
-  end
+  
+    def display_cart_list
+      cart_list = CartService.list
+      return unless cart_list.any?
 
-  def self.close
-    system('clear')
-    Menu.start
-  end
+      rows = []
+      cart_list.each_with_index do |product, i|
+        rows << [i, product.name, "#{product.price_in_cents.to_f / 100}€"]
+      end
 
-  def self.display_invalid_option
-    system('clear')
-    puts "Invalid option. Please try again."
-    display_main
-  end
-
-  def self.display_cart_list
-    cart_list = CartService.list
-    return unless cart_list.any?
-
-    puts "-------- CART LIST --------"
-    cart_list.each_with_index do |item, i|
-      puts "[#{i}] #{item.name}"
+      puts Terminal::Table.new :title => 'CART LIST', :headings => ['#', 'Product', 'Price'], :rows => rows, style: {:width => 60}
     end
-  end
+  
+    def display_main
+      rows = []
 
-  def self.display_main
-    puts "-------- CATALOG --------"
-    @products.each_with_index do |product, i|
-      puts "[#{i}] #{product.name}"
+      @products.each_with_index do |product, i|
+        rows << [i, product.name, "#{product.price_in_cents.to_f / 100}€"]
+      end
+
+      puts Terminal::Table.new :title => 'CATALOG', :headings => ['#', 'Product', 'Price'], :rows => rows, style: {:width => 60}
+      print "Add product to cart or press Q to go back "
     end
-    puts "----------------------"
-    print "Add product to cart or press Q to go back "
-  end
-
-  private_class_method
-
-  def self.handle_action(chomp)
-    option = @products[chomp.to_i] if chomp =~ /\A[-+]?[0-9]*\.?[0-9]+\Z/
-    if option
-      CartService.add_item(option)
-    else
-      display_invalid_option
+  
+    private_class_method
+  
+    def handle_action(chomp)
+      option = @products[chomp.to_i] if chomp =~ /\A[-+]?[0-9]*\.?[0-9]+\Z/
+      if option
+        CartService.add_item(option)
+      else
+        display_invalid_option
+      end
     end
   end
 end

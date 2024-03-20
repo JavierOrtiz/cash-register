@@ -1,3 +1,5 @@
+require 'terminal-table'
+
 class Cart
   class << self
     def start
@@ -30,12 +32,16 @@ class Cart
   
     def display_available_offers
       available_offers = CartService.available_offers
-      puts "-------- OFFERS AVAILABLE --------"
+      rows = []
       puts '- 0 offers available' if available_offers.empty?
-  
+
+      return if available_offers.empty?
+
       available_offers.each_with_index do |offer, i|
-        puts "[#{i}] - #{offer.name}"
+        rows << [i, offer.name]
       end
+
+      puts Terminal::Table.new :title => 'OFFERS AVAILABLE', :rows => rows, style: {:width => 60}
     end
   
     def close
@@ -49,21 +55,21 @@ class Cart
     end
   
     def display_main
-      # TODO: Print product list as a table, and try to add original price, and price with discount to give a better vision of discounts
       @cart_list = CartService.list
-  
-      puts "-------- CART LIST --------"
-      puts '- Empty cart' if @cart_list.empty?
-  
+      rows = []
+
       @cart_list.each_with_index do |item, i|
-        puts "[#{i}] - #{item.name} - #{item.price_in_cents.to_f / 100}€"
+        rows << [i, item.name, "#{item.price_in_cents.to_f / 100}€"]
       end
-      puts "----------------------"
-  
-      puts "TOTAL AMOUNT: #{CartService.total_amount}€"
-      puts "TOTAL AMOUNT WITH DISCOUNT: #{CartService.calculate_total_with_discount}€"
-  
-      puts "----------------------"
+
+      rows << ['-', '-', '-'] if @cart_list.empty?
+
+      rows << :separator
+      rows << [nil, "TOTAL AMOUNT:", "#{CartService.total_amount}€"]
+      rows << :separator
+      rows << [nil, "TOTAL WITH DISCOUNT:", "#{CartService.calculate_total_with_discount}€"]
+      puts Terminal::Table.new :title => 'CART LIST', :headings => ['#', 'Product', 'Price'], :rows => rows, style: {:width => 60}
+
       print "Remove product from cart or press Q to go back "
     end
   end

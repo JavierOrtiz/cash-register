@@ -6,7 +6,7 @@ RSpec.describe Cart do
   context "when the Cart is empty" do
     it "displays an empty cart" do
       expect(CartService).to receive(:list).exactly(4).times.and_return([])
-      expect { Cart.display_main }.to output(/Empty cart/).to_stdout
+      expect { Cart.display_main }.to output(/\+| -                 | -                    | -             |/).to_stdout
     end
   end
 
@@ -23,7 +23,7 @@ RSpec.describe Cart do
       cart_list = [double('Product', name: 'Redbull', price_in_cents: 250, code: 'RB1'), double('Product', name: 'Jagger', price_in_cents: 1150, code: 'JGG1')]
       total_amount = cart_list.sum(&:price_in_cents).to_f / 100
       expect(CartService).to receive(:list).exactly(4).times.and_return(cart_list)
-      expect { Cart.display_main }.to output(/TOTAL AMOUNT: #{total_amount}€/).to_stdout
+      expect { Cart.display_main }.to output(/TOTAL AMOUNT:        | #{total_amount}€/).to_stdout
     end
   end
 
