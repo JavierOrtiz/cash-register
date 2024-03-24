@@ -67,7 +67,7 @@ class Cart
       rows << :separator
       rows << [nil, "TOTAL AMOUNT:", "#{CartService.total_amount}€"]
       rows << :separator
-      rows << [nil, "TOTAL WITH DISCOUNT:", "#{CartService.calculate_total_with_discount}€"]
+      rows << [nil, "TOTAL WITH DISCOUNT:", "#{CartService.total_amount_with_discount}€"]
       puts Terminal::Table.new :title => 'CART LIST', :headings => ['#', 'Product', 'Price'], :rows => rows, style: {:width => 60}
 
       print "Remove product from cart or press Q to go back "
