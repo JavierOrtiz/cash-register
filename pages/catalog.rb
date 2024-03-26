@@ -1,13 +1,32 @@
 require './models/product'
 require './pages/menu'
 require 'terminal-table'
-require './pages/base'  # require the base class
+require './pages/base'
 
 class Catalog < Base
   class << self
+
     def start
       @products = Product.all
-      super
+      loop do
+        system('clear')
+        display_cart_list
+        display_main
+        chomp = gets.chomp
+        close if chomp == 'q'
+        handle_action(chomp)
+      end
+    end
+
+    def close
+      system('clear')
+      Menu.start
+    end
+
+    def display_invalid_option
+      system('clear')
+      puts "Invalid option. Please try again."
+      display_main
     end
 
     def display_cart_list
@@ -19,7 +38,7 @@ class Catalog < Base
         rows << [i, product.name, "#{product.price_in_cents.to_f / 100}€"]
       end
 
-      puts Terminal::Table.new :title => 'CART LIST', :headings => %w[# Product Price], :rows => rows, style: { :width => 60}
+      puts Terminal::Table.new :title => 'CART LIST', :headings => ['#', 'Product', 'Price'], :rows => rows, style: {:width => 60}
     end
 
     def display_main
