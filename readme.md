@@ -38,7 +38,7 @@ Structure:
 
 In offers, we need to take care about he logic. This column is the responsible of calculate the price applying the correct discounts to the products in list. This logic is interpolated by the values defined in Product and also in ProductOffer which its described below.
 
-Then, as you see, we have a new variable called `uniq_cart_items_count` and `total_amount`, we need to define this variable in `CalculatorService` to understand how we can interpolate it:
+Mapping resource in CalculatorService:
 
 ```ruby
     {
