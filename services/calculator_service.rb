@@ -20,18 +20,18 @@ class CalculatorService
   end
 
   def calculate_total_with_discount
-    total = 0
+    @total = 0
 
     product_offers.each do |p_offer|
-      total += apply_discounts(p_offer)
+      @total += apply_discounts(p_offer)
     end
 
-    (total.to_f / 100).round(2)
+    (@total.to_f / 100).round(2)
   end
 
   def product_offers
     product_codes = products.map(&:code).uniq
-    ProductOffer.all.select { |product_offer| product_codes.include?(product_offer.product_code) }
+    ProductOffer.all.select { |product_offer| product_offer.product_code.nil? || product_codes.include?(product_offer.product_code) }
   end
 
   def product(p_offer)
@@ -49,11 +49,11 @@ class CalculatorService
 
   def calculate_logic(p_offer)
     offer_logic = offer(p_offer).logic.dup
-    total_matched_products = products.count { |product| product.code == p_offer.product_code }
+    total_matched_products_count = p_offer.product_code ? products.count { |product| product.code == p_offer.product_code } : products.count
 
     {
-      'current_quantity' => total_matched_products.to_s,
-      'original_unit_price' => product(p_offer).price_in_cents.to_s,
+      'current_quantity' => total_matched_products_count.to_s,
+      'original_unit_price' => product(p_offer)&.price_in_cents&.to_s,
       'new_unit_price' => calculate_new_unit_price(p_offer),
       'min_quantity' => p_offer.min_quantity.to_s
     }.each do |key, value|
